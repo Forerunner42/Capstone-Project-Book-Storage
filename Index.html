@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon to change the tab img -->
+    <link rel="icon" type="image/png" href="./images/book.png">
+    <title>Book Inventory and Checkout</title>
+    <script src="bookJSON.js" defer></script>
+    <script src="book.js" defer></script>
+    <script src="theme.js" defer></script>
+    <script src="greet.js" defer></script>
+    <script src="reroll.js" defer></script>
+    <script src="checkout.js" defer></script>
+    <script src="button.js" defer></script>
+    <script src="storage.js" defer></script>
+    <script src="search.js" defer></script>
+    <script src="form.js" defer></script>
+    <script src="timer.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital@0;1&display=swap" rel="stylesheet">
+
+    <style>
+        /* Dark Theme (Default) */
+        :root{
+            --body-bg: rgb(18,18,18);
+            --bubble-bg:rgb(30,30,30);
+            --header-color: rgb(225,225,225);
+            --text-color: rgb(121,121,121);
+            --button-bg: rgb(182,138,250);
+            --button-color: rgb(0,0,0);
+            --list-style-color: rgb(182,138,250); /* li::marker */
+            --toggle-bg: rgb(195,105,122);
+        }
+
+        /* Light Theme */
+        .lightTheme{
+            --body-bg: rgb(255,255,255);
+            --bubble-bg:rgb(245,245,245);
+            --header-color: rgb(28,28,28);
+            --text-color: rgb(101,101,101);
+            --button-bg: lightgray;
+            --button-color: rgb(97,36,235);
+            --list-style-color: rgb(0,0,0);
+            --toggle-bg: rgb(94,216,197);
+        }
+
+        *,
+        *::before,
+        *::after{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: all 1s linear;
+        }
+        body{
+            background-color: var(--body-bg);
+        }
+        h2{
+            letter-spacing: 2px;
+            color: var(--header-color);
+        }
+        h1{
+            color: var(--header-color);
+        }
+
+        /* Header Section */
+        header{
+            background-color: var(--bubble-bg);
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header > button{
+            width: 5rem;
+            height: 5rem;
+            margin-left: 12rem;
+            font-size: 3rem;
+            background-color: var(--toggle-bg);
+        }
+        header > div{
+            display: flex;
+            flex-direction: column;
+        }
+        header > div > p{
+            font-style: italic;
+            align-self: center;
+            color: var(--text-color);
+        }
+
+        /* Recommended Section */
+        section{
+            width: 70%;
+            background-color:var(--bubble-bg);
+            margin: 40px auto 20px auto;
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+        section > div > ul{
+            list-style-type: none;
+        }
+        section > h2{
+            width: 100%;
+            padding: 0 0 20px 0;
+        }
+        .recommended{
+            display:flex;
+            align-items: center;
+            flex-direction: column;
+        }
+        .recommended > img{
+            width: 200px;
+            height: 300px;
+            border: 3px solid black; 
+        }
+        .recommended > h2{
+            max-width: 200px;
+        }
+        .recommended > button{
+            margin: 4px;
+            padding: 10px;
+            font-family: "Roboto", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+            font-variation-settings: "wdth" 100;
+            letter-spacing: 1px;
+            background-color: var(--button-bg);
+            color: var(--button-color);
+        }
+        .recommended > ul > li{
+            color: var(--text-color);
+        }
+
+        /* Reroll Button */
+        article{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        article > button{
+            width: 5rem;
+            height: 5rem;
+            font-size: 3rem;
+            background-color: var(--toggle-bg);
+        }
+        article > p{
+            padding: 5px;
+            color: var(--text-color);
+        }
+
+        /* Main Content Grid Section */
+        main{
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+        }
+
+        /* Form Section */
+        .categories{
+            background-color: var(--bubble-bg);
+            margin: 30px;
+            border-radius: 20px;
+        }
+        .categories > h2{
+            padding: 20px;
+            text-align: center;
+        }
+        form{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            margin: 0 10% 0 10%;
+        }
+        form > label{
+            color: var(--text-color);
+        }
+        form > input{
+            margin-bottom: 10px;
+            padding: 3px;
+        }
+        #submit{
+            margin: 20px;
+            width: 6rem;
+            height: 3rem;
+            align-self: center;
+            font-family: "Roboto", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+            font-variation-settings: "wdth" 100;
+            letter-spacing: 1px;
+            background-color: var(--button-bg);
+            color: var(--button-color);
+        }
+
+        /* Main Content Section */
+        #display{
+            margin: 30px;
+            border-radius: 20px;
+            background-color: var(--bubble-bg);
+        }
+        #display > h2{
+            padding: 20px;
+            text-align: center;
+        }
+        #search{
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 15rem;
+            border-radius: 20px;
+        }
+        .bookNode{
+            display: flex;
+            width: 80%;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: var(--bubble-bg);
+            border: 3px solid gray;
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+        .bookNode > img{
+            width: 200px;
+            height: 300px;
+            margin-right: 30px;
+            border: 3px solid gray;
+        }
+        .subBookNode{
+            display: flex;
+            flex-direction: column;
+            margin: 1rem;
+            width: 100%;
+
+        }
+        .nodeDisplay{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            flex: 1;
+        }
+        .nodeButton{
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 20px;
+        }
+        .nodeButton > li > button{
+            width: 60px;
+            height: 40px;
+            font-family: "Roboto", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+            font-variation-settings: "wdth" 100;
+            letter-spacing: 1px;
+            background-color: var(--button-bg);
+            color: var(--button-color);
+        }
+        .nodeli{
+            list-style-type: square;
+            color: var(--text-color);
+        }
+        .nodeli::marker, .nodeButton > li::marker{
+            color: var(--list-style-color);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px){
+            section{
+                flex-direction: column;
+            }
+            section > div{
+                margin-bottom: 40px;
+            }
+
+            main{
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1 id="title">🔖 Book Inventory</h1>
+        <div>
+            <h2 id="username"></h2>
+            <p id="timer"></p>
+        </div>
+        <button id="lightDark" title="Light and Dark mode toggle">🌑</button>
+    </header>
+
+
+
+    <!-- Recommended Section -->
+    <section id="recSection">
+        <h2>Recommended</h2>
+
+        <!-- <div class="recommended">
+            <img src="images/TCTDNewYorkCollapse.webp" alt="placeholder">
+            <h2>New York Collapse</h2>
+            <ul>
+                <li>Author: Alexander Irvine</li>
+                <li>Publisher: Ubisoft</li>
+                <li>Pages: 176</li>
+                <li>Genre: Techno-thriller</li>
+            </ul>
+            <button id="b1" title="Add to Checkout">Checkout</button>
+        </div>
+
+        <div class="recommended">
+            <img src="images/TCTDNewYorkCollapse.webp" alt="placeholder">
+            <h2>New York Collapse</h2>
+            <ul>
+                <li>Author: </li>
+                <li>Publisher: </li>
+                <li>Pages: </li>
+                <li>Genre: </li>
+            </ul>
+            <button id="b2" title="Add to Checkout">Checkout</button>
+        </div>
+
+        <div class="recommended">
+            <img src="images/TCTDNewYorkCollapse.webp" alt="placeholder">
+            <h2>New York Collapse</h2>
+            <ul>
+                <li>Author: </li>
+                <li>Publisher: </li>
+                <li>Pages: </li>
+                <li>Genre: </li>
+            </ul>
+            <button id="b3" title="Add to Checkout">Checkout</button>
+        </div> -->
+
+         <!-- Reroll Recommended -->
+    <article>
+        <button id="reroll" title="Change Recommended">🔄</button>
+
+        <p><i>Reroll Recommended</i></p>
+    </article>
+    </section>
+
+
+
+    <!-- Main Section -->
+    <main>
+        <!-- Categories and Form Section -->
+        <div class="categories">
+            <!-- Main Header Section -->
+            <h2>Enter Your Book</h2>
+
+            <form>
+                <!-- Name Category -->
+                <label for="nameForm">Book Name :</label>
+                <input type="text" id="nameForm" placeholder="Enter Book Name" required>
+
+                <!-- Author Category -->
+                <label for="authorForm">Author Name :</label>
+                <input type="text" id="authorForm" placeholder="Enter Author Name" required>
+
+                <!-- Publisher Category -->
+                <label for="publisherForm">Publisher :</label>
+                <input type="text" id="publisherForm" placeholder="Enter the Book's Publisher" required>
+
+                <!-- Page Number Category -->
+                <label for="pageNumForm">Page Number :</label>
+                <input type="number" id="pageNumForm" placeholder="Enter the Number of Pages" required>
+
+                <!-- Genre Category -->
+                <label for="genreForm">Genre :</label>
+                <input type="text" id="genreForm" placeholder="Enter the Genre Type" required>
+
+                <!-- Img Category -->
+                <label for="imgForm">Image (Optional) :</label>
+                <input type="text" id="imgForm" placeholder="Enter Image link">
+
+                <input type="submit" id="submit">
+            </form>
+        </div>
+
+        <!-- Main Display Section -->
+        <div id="display">
+            <h2>Your Books Will Display Here</h2>
+            <input type="text" id="search" placeholder="🔎 Search">
+
+            <!-- <div class="bookNode">
+                <img src="images/TCTDHunted.webp">
+
+                <div class="subBookNode">
+                    <ul class="nodeDisplay">
+                        <li class="nodeli">Name</li>
+                        <li class="nodeli">Author</li>
+                        <li class="nodeli">Publisher</li>
+                        <li class="nodeli">Page Number</li>
+                        <li class="nodeli">Genre</li>
+                    </ul>
+
+                    <ul class="nodeButton">
+                        <li><button id="edit" onclick="edit(this)">Edit</button></li>
+                        <li><button id="Remove" onclick="remove(this)">Remove</button></li>
+                    </ul>
+                </div>
+            </div> -->
+
+        </div>
+    </main>
+</body>
+</html>
